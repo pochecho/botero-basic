@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carga de documentos</title>
+    <link rel="stylesheet" href="bootstrap.min.css" type="" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="index.js"></script>
+  </head>
+  <body onload="init()" class="vh-100 d-flex justify-content-center flex-column align-items-center">
+    <figure class="w-25 d-flex justify-content-center flex-column align-items-center">
+      <img id="preview" class="w-100" src="preview.jpg" alt="" />
+    </figure>
+    <form
+      class="w-100 form d-flex justify-content-center flex-column align-items-center"
+      action="/convert"
+      target="_blank"
+      enctype="multipart/form-data"
+      method="post">
+      <div>
+        <p>
+          Recuerde subir imágenes
+
+          <span class="text-danger"> SIN FONDO </span>
+        </p>
+      </div>
+      <div class="mb-3 w-75">
+        <label for="imagen" class="form-label">Imagen</label>
+        <input
+          required
+          class="form-control w-100"
+          aria-describedby="imagen-description"
+          name="imagen"
+          accept="image/png, .jpeg, .jpg"
+          id="imagen"
+          type="file" />
+        <div id="imagen-description">
+          <p>No se puede ingresar imágenes en formato webp</p>
+        </div>
+      </div>
+      <div class="mb-3 w-75">
+        <label for="brightness" class="form-label">Brillo</label>
+        <input
+          required
+          id="brightness"
+          class="form-control w-100"
+          name="brightness"
+          type="number"
+          step="0.1"
+          max="1"
+          min="0"
+          value="0"
+          aria-describedby="brightness-description" />
+
+        <div id="brightness-description">
+          <p>0 Significa que no se aumentará el brillo, y 1 significa que se aumentará el brillo al máximo.</p>
+        </div>
+      </div>
+      <button class="btn btn-primary">Convertir</button>
+    </form>
+  </body>
+</html>
