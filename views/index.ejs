@@ -12,20 +12,12 @@
     <figure class="w-25 d-flex justify-content-center flex-column align-items-center">
       <img id="preview" class="w-100" src="preview.jpg" alt="" />
     </figure>
-    <form
-      class="w-100 form d-flex justify-content-center flex-column align-items-center"
-      action="/convert"
-      target="_blank"
-      enctype="multipart/form-data"
-      method="post">
-      <div>
-        <p>
-          Recuerde subir imágenes
-
-          <span class="text-danger"> SIN FONDO </span>
-        </p>
+    <form class="row" action="/convert" target="_blank" enctype="multipart/form-data" method="post">
+      <div class="col-12 text-center">
+        Recuerde subir imágenes
+        <span class="text-danger"> SIN FONDO </span>
       </div>
-      <div class="mb-3 w-75">
+      <div class="mb-3 col-12">
         <label for="imagen" class="form-label">Imagen</label>
         <input
           required
@@ -39,7 +31,7 @@
           <p>No se puede ingresar imágenes en formato webp</p>
         </div>
       </div>
-      <div class="mb-3 w-75">
+      <div class="mb-3 col-6">
         <label for="brightness" class="form-label">Brillo</label>
         <input
           required
@@ -57,7 +49,58 @@
           <p>0 Significa que no se aumentará el brillo, y 1 significa que se aumentará el brillo al máximo.</p>
         </div>
       </div>
-      <button class="btn btn-primary">Convertir</button>
+      <div class="mb-3 col-6">
+        <label for="threshold" class="form-label">Threshold</label>
+        <input
+          required
+          id="threshold"
+          class="form-control w-100"
+          name="threshold"
+          type="number"
+          step="1"
+          max="255"
+          min="0"
+          value="128"
+          aria-describedby="threshold-description" />
+
+        <div id="threshold-description">
+          <p>
+            Se refiere a un valor que se utiliza para convertir una imagen en una imagen binaria, donde los píxeles se clasifican como
+            blancos o negros según si su intensidad supera o no ese umbral.
+          </p>
+        </div>
+      </div>
+      <div class="mb-3 col-6">
+        <label for="turdSize" class="form-label">TurdSize</label>
+        <input
+          required
+          id="turdSize"
+          class="form-control w-100"
+          name="turdSize"
+          type="number"
+          step="1"
+          max="255"
+          min="0"
+          value="6"
+          aria-describedby="turdSize-description" />
+
+        <div id="turdSize-description">
+          <p>Tamaño mínimo de los detalles a eliminar</p>
+        </div>
+      </div>
+      <div class="mb-3 col-6 form-check">
+        <label for="optCurve" class="form-check-label">Optimizaición de costos</label>
+        <input
+          id="optCurve"
+          class="form-check-input w-100"
+          name="optCurve"
+          type="checkbox"
+          aria-describedby="optCurve-description" />
+      </div>
+      <div class="col-12 d-flex justify-content-center">
+
+        <button class="btn btn-primary">Convertir</button>
+      </div>
     </form>
   </body>
 </html>

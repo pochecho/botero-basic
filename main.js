@@ -22,7 +22,7 @@ if (!fs.existsSync(UPLOADS_FOLDER)) {
 }
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, UPLOADS_FOLDER); 
+    cb(null, UPLOADS_FOLDER);
   },
   filename: (req, file, cb) => {
     const extension = file.originalname.split('.').pop();
@@ -45,9 +45,12 @@ app.get('/', (req, res) => {
 });
 
 app.post('/convert', upload.single('imagen'), async (req, res) => {
-
   const brightness = parseFloat(req.body.brightness);
+  const threshold = parseFloat(req.body.threshold);
+  const turdSize = parseFloat(req.body.turdSize);
+  const optCurve = req.body.optCurve == 'true';
 
+  console.log(req.body);
   sharp(req.file.path)
     .metadata()
     .then((metadata) => {
@@ -58,7 +61,7 @@ app.post('/convert', upload.single('imagen'), async (req, res) => {
 
       let targetWidth = initialWidth;
       let targetHeight = initialHeight;
-      
+
       const factor = initialWidth / initialHeight;
       if (initialWidth > MAX_WIDTH) {
         targetWidth = MAX_WIDTH;
@@ -66,14 +69,13 @@ app.post('/convert', upload.single('imagen'), async (req, res) => {
       } else if (initialHeight > MAX_HEIGHT) {
         targetHeight = MAX_HEIGHT;
 
-
         targetWidth = Math.round(targetHeight * factor);
       }
-
 
       console.log(targetWidth, targetHeight);
 
       sharp(req.file.path)
+        .toFormat('png')
         .resize(targetWidth, targetHeight)
         .toFile(TEMP_NAME, async (err) => {
           if (err) {
@@ -84,10 +86,12 @@ app.post('/convert', upload.single('imagen'), async (req, res) => {
           const nuevaImagen = new Jimp(targetWidth, targetHeight, 0xffffffff);
           const image = await Jimp.read(TEMP_NAME);
 
+          image.write('aber.png');
           nuevaImagen.composite(image, 0, 0);
 
           nuevaImagen
             .grayscale()
+            // .invert()
             .brightness(brightness)
             .write(TEMP_NAME, (err) => {
               if (err) {
@@ -97,9 +101,9 @@ app.post('/convert', upload.single('imagen'), async (req, res) => {
 
               const bitmap = fs.readFileSync(TEMP_NAME);
               const options = {
-                threshold: 128, // Umbral para la binarización
-                turdSize: 2, // Tamaño mínimo de los detalles a eliminar
-                optCurve: false, // Optimizar curvas
+                threshold, // Umbral para la binarización
+                turdSize, // Tamaño mínimo de los detalles a eliminar
+                optCurve, // Optimizar curvas
               };
 
               potrace.trace(bitmap, options, (err, svg) => {
